@@ -5,14 +5,7 @@
 			{
 				"name": "GetLastTrackingVersion",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "GetCurrentTrackingVersion",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -57,6 +50,113 @@
 						"referenceName": "dsSqlChangeTrackingTable",
 						"type": "DatasetReference"
 					}
+				}
+			},
+			{
+				"name": "cp-CopyData-inc",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "GetLastTrackingVersion",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "GetCurrentTrackingVersion",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT tb.ClienteID,tb.Nombre,tb.Apellidos, tb.edad, tb.correo, tb.telefono, CT.SYS_CHANGE_VERSION, SYS_CHANGE_OPERATION \nfrom dbo.Cliente as tb \nRIGHT OUTER JOIN \nCHANGETABLE(CHANGES dbo.Cliente, @{activity('GetLastTrackingVersion').output.firstRow.LastChangeTrackingVersion}) AS CT \n\tON tb.ClienteID = CT.ClienteID \nwhere CT.SYS_CHANGE_VERSION <= @{activity('GetCurrentTrackingVersion').output.firstRow.CurrentChangeTrackingVersion}",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "dsSqlCLiente",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dsAdlsCliente",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "sp-UpdateChangeTrackingVersion",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "cp-CopyData-inc",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Update_ChangeTracking_Version]",
+					"storedProcedureParameters": {
+						"CurrentTrackingVersion": {
+							"value": {
+								"value": "@activity('GetCurrentTrackingVersion').output.firstRow.CurrentChangeTrackingVersion",
+								"type": "Expression"
+							},
+							"type": "Int64"
+						},
+						"TableName": {
+							"value": {
+								"value": "@pipeline().parameters.tableName",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "lksSqlPocIngesta",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
