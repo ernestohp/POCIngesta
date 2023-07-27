@@ -5,7 +5,14 @@
 			{
 				"name": "Get Current TrackingVersion",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "GetLastTrackingVersion",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -13,10 +20,21 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dsSqlCLiente",
+						"type": "DatasetReference"
+					}
+				}
 			},
 			{
-				"name": "Get Last TrackingVersion",
+				"name": "GetLastTrackingVersion",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -26,7 +44,19 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT CHANGE_TRACKING_CURRENT_VERSION() as CurrentChangeTrackingVersion",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "dsSqlChangeTrackingTable",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"annotations": []
