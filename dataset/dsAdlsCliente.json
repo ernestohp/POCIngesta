@@ -1,0 +1,21 @@
+{
+	"name": "dsAdlsCliente",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lksAdslPocIngesta",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "cliente",
+				"folderPath": "demo",
+				"container": "pocingesta"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}

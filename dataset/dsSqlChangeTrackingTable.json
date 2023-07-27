@@ -1,0 +1,26 @@
+{
+	"name": "dsSqlChangeTrackingTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lksSqlPocIngesta",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "TableName",
+				"type": "varchar"
+			},
+			{
+				"name": "SYS_CHANGE_VERSION",
+				"type": "bigint",
+				"precision": 19
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "table_store_ChangeTracking_version"
+		}
+	}
+}
