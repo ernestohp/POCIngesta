@@ -1,0 +1,9 @@
+{
+	"name": "pocingesta-df-demo",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "5b27cdcb-4a39-4332-afc5-defd203ea2ef",
+		"tenantId": "55a2bc67-aec1-4ad2-9a9c-5b2457b91dcd"
+	}
+}
