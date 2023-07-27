@@ -83,6 +83,41 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "sp-UpdateChangeTrackingVersion",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "cp-FullCopyActivity",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Update_ChangeTracking_Version]",
+					"storedProcedureParameters": {
+						"CurrentTrackingVersion": {
+							"value": {
+								"value": "@activity('GetCurrentTrackingVersion').output.firstRow.CurrentChangeTrackingVersion",
+								"type": "Expression"
+							}
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "lksSqlPocIngesta",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": []
