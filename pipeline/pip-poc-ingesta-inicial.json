@@ -110,7 +110,15 @@
 							"value": {
 								"value": "@activity('GetCurrentTrackingVersion').output.firstRow.CurrentChangeTrackingVersion",
 								"type": "Expression"
-							}
+							},
+							"type": "Int64"
+						},
+						"TableName": {
+							"value": {
+								"value": "@pipeline().parameters.tableName",
+								"type": "Expression"
+							},
+							"type": "String"
 						}
 					}
 				},
@@ -120,6 +128,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"tableName": {
+				"type": "string",
+				"defaultValue": "Cliente"
+			}
+		},
 		"annotations": []
 	}
 }
