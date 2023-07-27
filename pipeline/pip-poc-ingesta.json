@@ -24,7 +24,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "SELECT SYS_CHANGE_VERSION AS LastChangeTrackingVersion FROM dbo.table_store_ChangeTracking_version\nWHERE TableName='Cliente';",
+						"sqlReaderQuery": "SELECT SYS_CHANGE_VERSION AS LastChangeTrackingVersion, TableName  FROM dbo.table_store_ChangeTracking_version\nWHERE TableName='Cliente';",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
