@@ -5,7 +5,14 @@
 			{
 				"name": "GetLastTrackingVersion",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "GetCurrentTrackingVersion",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -51,48 +58,14 @@
 						"type": "DatasetReference"
 					}
 				}
-			},
-			{
-				"name": "CopyIncremental",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "GetLastTrackingVersion",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "GetCurrentTrackingVersion",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "SqlServerSource",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "dsSqlCLiente",
-						"type": "DatasetReference"
-					}
-				]
 			}
 		],
+		"parameters": {
+			"tableName": {
+				"type": "string",
+				"defaultValue": "Cliente"
+			}
+		},
 		"annotations": []
 	}
 }
