@@ -1,0 +1,12 @@
+{
+	"name": "lksUploadFile",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://flaskdemoapifiles.azurewebsites.net/upload",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
