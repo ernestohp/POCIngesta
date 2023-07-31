@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "https://flaskdemoapifiles.azurewebsites.net/upload",
+			"url": "https://flaskdemoapifiles.azurewebsites.net/",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
