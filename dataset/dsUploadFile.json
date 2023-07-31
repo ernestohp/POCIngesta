@@ -1,0 +1,15 @@
+{
+	"name": "dsUploadFile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lksUploadFile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "upload"
+		},
+		"schema": []
+	}
+}
