@@ -81,7 +81,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "SELECT tb.ClienteID,tb.Nombre,tb.Apellidos, tb.edad, tb.correo, tb.telefono , CT.SYS_CHANGE_VERSION, SYS_CHANGE_OPERATION \nfrom dbo.Cliente as tb \nRIGHT OUTER JOIN \nCHANGETABLE(CHANGES dbo.Cliente, @{activity('GetLastTrackingVersion').output.firstRow.LastChangeTrackingVersion}) AS CT \n\tON tb.ClienteID = CT.ClienteID \nwhere CT.SYS_CHANGE_VERSION <= @{activity('GetCurrentTrackingVersion').output.firstRow.CurrentChangeTrackingVersion}",
+							"value": "SELECT tb.ClienteID,tb.Nombre,tb.Apellidos, tb.edad, tb.correo, tb.telefono , CT.SYS_CHANGE_VERSION, CT.SYS_CHANGE_OPERATION \nfrom dbo.Cliente as tb \nRIGHT OUTER JOIN \nCHANGETABLE(CHANGES dbo.Cliente, @{activity('GetLastTrackingVersion').output.firstRow.LastChangeTrackingVersion}) AS CT \n\tON tb.ClienteID = CT.ClienteID \nwhere CT.SYS_CHANGE_VERSION <= @{activity('GetCurrentTrackingVersion').output.firstRow.CurrentChangeTrackingVersion}",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
