@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@concat('Clientes_', formatDateTime(utcnow(), 'yyyy-dd-MM'))",
+					"value": "@concat('Clientes_', formatDateTime(utcnow(), 'yyyy-dd-MM'),'.parquet')",
 					"type": "Expression"
 				},
 				"folderPath": "demo/cliente",
