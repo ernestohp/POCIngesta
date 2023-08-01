@@ -10,6 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@concat('Clientes_', formatDateTime(utcnow(), 'yyyy-dd-MM'))",
+					"type": "Expression"
+				},
 				"folderPath": "demo/cliente",
 				"container": "pocingesta"
 			},
