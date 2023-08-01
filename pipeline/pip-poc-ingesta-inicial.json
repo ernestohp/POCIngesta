@@ -49,6 +49,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "SELECT tb.*, ISNULL(CT.SYS_CHANGE_VERSION,0), ISNULL(CT.SYS_CHANGE_OPERATION,'I')\nFROM dbo.Cliente tb\nLEFT JOIN CHANGETABLE(CHANGES dbo.Cliente, -1) AS CT \n\tON tb.ClienteID = CT.ClienteID \nWHERE ISNULL(SYS_CHANGE_VERSION,0) <= @{activity('GetCurrentTrackingVersion').output.firstRow.CurrentChangeTrackingVersion};",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
